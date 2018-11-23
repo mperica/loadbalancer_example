@@ -1,0 +1,25 @@
+version: "3"
+services:
+  website1:
+    image: "php:7.2-apache"
+    volumes:
+      - ./website:/var/www/html
+    ports:
+      - "5001:80"
+
+  website2:
+    image: "php:7.2-apache"
+    volumes:
+      - ./website:/var/www/html
+    ports:
+      - "5002:80"
+
+  loadbalancer:
+    image: "dockercloud/haproxy:1.5"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    links:
+      - website1
+      - website2
+    ports:
+      - "80:80"
